@@ -39,4 +39,22 @@ defmodule Util do
     |> Enum.map(fn {a, b} -> a ^^^ b end)
     |> List.to_string
   end
+
+  def popcount(z, i \\ 0) do
+    case z do
+      0 -> i
+      _ -> popcount(z &&& z-1, i+1)
+    end
+  end
+
+  def hamming(x, y) when is_integer(x) and is_integer(y) do
+    popcount(x ^^^ y)
+  end
+
+  def hamming(s1, s2) when is_binary(s1) and is_binary(s2) do
+    [s1, s2]
+    |> Enum.map(fn x -> :binary.bin_to_list(x) end)
+    |> Enum.zip
+    |> Enum.reduce(0, fn {a, b}, acc -> hamming(a, b) + acc end)
+  end
 end
