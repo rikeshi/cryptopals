@@ -57,4 +57,11 @@ defmodule Util do
     |> Enum.zip
     |> Enum.reduce(0, fn {a, b}, acc -> hamming(a, b) + acc end)
   end
+
+  # distribution divergence from P to Q
+  def kl_divergence(p, q) when is_list(p) and is_list(q) do
+    Enum.zip(p, q)
+    |> Enum.map(fn {pi, qi} -> pi * :math.log(pi/qi) end)
+    |> Enum.sum
+  end
 end
